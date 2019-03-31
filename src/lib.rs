@@ -62,23 +62,26 @@ pub enum LoadState<T> {
 /// ````
 pub trait Configurable: Default + serde::Serialize + serde::de::DeserializeOwned {
     /// Qualifier (e.g. "com.github")
-    #[allow(non_upper_case_globals)]
-    const Qualifier: &'static str;
+    ///
+    /// Defaults to `com.github`
+    const QUAL: &'static str = "com.github";
     /// Organization (e.g. "museun" (in github.com/museun))
-    #[allow(non_upper_case_globals)]
-    const Organization: &'static str;
+    ///
+    /// You must provide this
+    const ORG: &'static str;
     /// Application (e.g. "foo" (in github.com/museun/foo))
     ///
-    /// Defaults to $CARGO_PKG_NAME
-    #[allow(non_upper_case_globals)]
-    const Application: &'static str = env!("CARGO_PKG_NAME");
+    /// Defaults to `$CARGO_PKG_NAME`
+    const APP: &'static str = env!("CARGO_PKG_NAME");
 
     /// The name of the toml file
+    ///
+    /// ex: `config.toml`
     fn name() -> &'static str;
 
     /// Ensures the directory exists
     fn ensure_dir() -> Result<PathBuf, Error> {
-        let (qualifier, org, app) = (Self::Qualifier, Self::Organization, Self::Application);
+        let (qualifier, org, app) = (Self::QUAL, Self::ORG, Self::APP);
         let dirs = directories::ProjectDirs::from(qualifier, org, app)
             .expect("system must have a valid $HOME directory");
         let dirs = dirs.config_dir();
