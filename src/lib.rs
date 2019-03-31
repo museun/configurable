@@ -46,16 +46,39 @@ pub enum LoadState<T> {
 }
 
 /// Trait to provide easier loaded/saving of a `config` type
+///
+/// Provide static strs for `Qualifier`, `Organization`, `Application` and `name()`
+///
+/// Will which will produce $XDG_CONFIG_PATH/qualifier.organization.application/name
+///
+/// ```rust
+/// Qualifier = "com.github",
+/// Organization = "museun",
+/// Application = "foobar",
+/// // ..
+/// fn name() -> &'static str { "config.toml" }
+///
+/// // -> "~/.config/com.github/museun/foobar/config.toml
+/// ````
 pub trait Configurable: Default + serde::Serialize + serde::de::DeserializeOwned {
+    /// Qualifier (e.g. "com.github")
+    #[allow(non_upper_case_globals)]
+    const Qualifier: &'static str;
+    /// Organization (e.g. "museun" (in github.com/museun))
+    #[allow(non_upper_case_globals)]
+    const Organization: &'static str;
+    /// Application (e.g. "foo" (in github.com/museun/foo))
+    ///
+    /// Defaults to $CARGO_PKG_NAME
+    #[allow(non_upper_case_globals)]
+    const Application: &'static str = env!("CARGO_PKG_NAME");
+
     /// The name of the toml file
     fn name() -> &'static str;
 
-    /// The `qualifier`.`org`.`app`
-    fn base() -> (&'static str, &'static str, &'static str);
-
     /// Ensures the directory exists
     fn ensure_dir() -> Result<PathBuf, Error> {
-        let (qualifier, org, app) = Self::base();
+        let (qualifier, org, app) = (Self::Qualifier, Self::Organization, Self::Application);
         let dirs = directories::ProjectDirs::from(qualifier, org, app)
             .expect("system must have a valid $HOME directory");
         let dirs = dirs.config_dir();
