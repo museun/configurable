@@ -51,7 +51,7 @@ pub enum LoadState<T> {
 ///
 /// Will which will produce $XDG_CONFIG_PATH/qualifier.organization.application/name
 ///
-/// ```rust
+/// ```norun
 /// Qualifier = "com.github",
 /// Organization = "museun",
 /// Application = "foobar",
@@ -117,6 +117,17 @@ pub trait Configurable: Default + serde::Serialize + serde::de::DeserializeOwned
         let dir = Self::ensure_dir()?.join(Self::name());
         let s = toml::to_string_pretty(&self).map_err(Error::TomlWrite)?;
         fs::write(dir, s).map_err(Error::Write)
+    }
+
+    /// Ensures the directory exists and returns a `PathBuf` to it
+    fn dir() -> Result<PathBuf, Error> {
+        Self::ensure_dir()
+    }
+
+    /// Ensures the directory exists and returns a `PathBuf` to the
+    /// configuration file inside of the directory
+    fn path() -> Result<PathBuf, Error> {
+        Self::ensure_dir().map(|d| d.join(Self::name()))
     }
 }
 
