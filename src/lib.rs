@@ -129,6 +129,17 @@ pub trait Configurable: Default + serde::Serialize + serde::de::DeserializeOwned
     fn path() -> Result<PathBuf, Error> {
         Self::ensure_dir().map(|d| d.join(Self::name()))
     }
+
+    /// Ensures the directory exists and returns a `PathBuf` to the
+    /// data directory
+    fn data() -> Result<PathBuf, Error> {
+        let (qualifier, org, app) = (Self::QUAL, Self::ORG, Self::APP);
+        let dirs = directories::ProjectDirs::from(qualifier, org, app)
+            .expect("system must have a valid $HOME directory");
+        let dirs = dirs.data_dir();
+        fs::create_dir_all(&dirs).map_err(Error::Write)?;
+        Ok(dirs.to_owned())
+    }
 }
 
 /// Environment var loader which can be overridden by a .env file
