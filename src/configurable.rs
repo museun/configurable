@@ -31,7 +31,7 @@ pub trait Config: Configurable {
 
 /// Trait to provide easier loaded/saving of a `config` type
 ///
-/// Provide static strs for `Qualifier`, `Organization`, `Application` and `name()`
+/// Provide static strs for `Qualifier`, `Organization`, `Application` and `Name`
 ///
 /// Will which will produce $CONFIG_PATH/qualifier.organization.application/name
 ///
