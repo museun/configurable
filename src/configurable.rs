@@ -40,11 +40,11 @@ pub trait Config: Configurable {
 /// use serde::{Serialize, Deserialize};
 /// use std::path::PathBuf;
 /// use configurable::{Config, Data, Configurable, Error};
-/// 
+///
 /// // Default is required
 /// #[derive(Default, Serialize, Deserialize)]
 /// struct MyConfig;
-/// 
+///
 /// // For configurations (e.g. foo.toml)
 /// impl Config for MyConfig {};
 /// impl Configurable for MyConfig {
@@ -60,17 +60,17 @@ pub trait Config: Configurable {
 /// // will place it here:
 /// // -> "~/.config/com.github/museun/foobar/config.toml
 /// ```
-/// 
+///
 /// # Data-style configurations (e.g. formats outside of toml)
 /// ```
 /// use serde::{Serialize, Deserialize};
 /// use std::path::PathBuf;
 /// use configurable::{Config, Data, Configurable, Error};
-/// 
+///
 /// // Default is required
 /// #[derive(Default, Serialize, Deserialize)]
 /// struct MyMap { map: std::collections::HashMap<String,i32> }
-/// 
+///
 /// // For configurations (e.g. foo.toml)
 /// impl Data for MyMap {};
 /// impl Configurable for MyMap {
@@ -134,7 +134,7 @@ pub trait Configurable: Default + serde::Serialize + serde::de::DeserializeOwned
     ///
     /// Returns a `LoadState`
     /// * Default meant it created a default instance
-    /// * Loaded meant it create the instance from the file    
+    /// * Loaded meant it created the instance from the file    
     fn load_or_default() -> Result<LoadState<Self>, Error> {
         match Self::load() {
             Ok(this) => Ok(LoadState::Loaded(this)),
@@ -147,9 +147,7 @@ pub trait Configurable: Default + serde::Serialize + serde::de::DeserializeOwned
     fn load() -> Result<Self, Error> {
         let dir = Self::ensure_dir()?.join(Self::NAME);
         let data = fs::read_to_string(dir).map_err(Error::Read)?;
-        Ok(toml::from_str(&data)
-            .map_err(Error::TomlRead)
-            .unwrap_or_default())
+        toml::from_str(&data).map_err(Error::TomlRead)
     }
 
     /// Tries to save the configuration
