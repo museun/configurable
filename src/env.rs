@@ -1,9 +1,5 @@
-use std::borrow::Borrow;
 use std::collections::HashMap;
 use std::env;
-use std::ffi::OsStr;
-use std::fs;
-use std::hash::Hash;
 use std::path::Path;
 
 /// Environment var loader which can be overridden by a .env file
@@ -12,14 +8,9 @@ impl Env {
     /// Get the `key` from the `env`
     ///
     /// This is overridden by the .env file
-    pub fn env<Q>(key: Q) -> Option<String>
-    where
-        Q: Sized + Hash + Eq,
-        Q: AsRef<OsStr>,
-        String: Borrow<Q>,
-    {
+    pub fn env(key: &str) -> Option<String> {
         Self::load(".env")
-            .remove(&key)
+            .remove(key)
             .or_else(|| env::var(key).ok())
     }
 
@@ -32,7 +23,7 @@ impl Env {
     where
         P: AsRef<Path>,
     {
-        fs::read_to_string(path)
+        std::fs::read_to_string(path)
             .map(|data| {
                 data.lines()
                     .filter(|s| s.starts_with('#'))

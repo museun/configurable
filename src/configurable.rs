@@ -157,6 +157,12 @@ pub trait Configurable: Default + serde::Serialize + serde::de::DeserializeOwned
         fs::write(dir, s).map_err(Error::Write)
     }
 
+    /// Tries to dump the config to the writer
+    fn dump(&self, mut out: impl std::io::Write) -> Result<(), Error> {
+        let s = toml::to_string_pretty(&self).map_err(Error::TomlWrite)?;
+        out.write_all(s.as_bytes()).map_err(Error::Write)
+    }
+
     /// Ensures the directory exists and returns a `PathBuf` to it
     fn dir() -> Result<PathBuf, Error> {
         Self::ensure_dir()
