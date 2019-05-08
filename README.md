@@ -1,6 +1,7 @@
 ﻿# configurable
 [![Crates.io](https://img.shields.io/crates/l/configurable/0.3.3.svg?style=flat-square)]
 [![doc.rs](https://docs.rs/configurable/badge.svg)](https://docs.rs/configurable/latest/configurable/)
+[![CircleCI](https://circleci.com/gh/museun/configurable.svg?style=svg)](https://circleci.com/gh/museun/configurable)
 [![Crates.io](https://img.shields.io/crates/v/configurable.svg)](https://crates.io/crates/configurable)
 
 This crate provides a set of functions for loading/saving structs to toml files in
