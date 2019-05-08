@@ -5,6 +5,13 @@ authors = ["museun <museun@outlook.com>"]
 edition = "2018"
 license = "0BSD"
 description = "simple helpers for loading/saving a struct to file in $XDG"
+repository = "https://github.com/museun/configurable"
+readme = "README.md"
+keywords = [ "configuraiton" ]
+
+[badges]
+# circle-ci = { repository = "museun/twitchchat", branch = "master", service = "github" }
+maintenance = { status = "actively-developed" }
 
 [dependencies]
 directories = "1.0.2"
