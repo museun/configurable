@@ -5,6 +5,7 @@
 //! ```
 //! use configurable::{Configurable, Config, Data, Error, LoadState};
 //! use serde::{Serialize, Deserialize};
+//!
 //! #[derive(Serialize, Deserialize)]
 //! struct MyConfiguration {
 //!     name: String,
@@ -39,13 +40,13 @@
 //! ```
 //! use configurable::{Configurable, Config, Data, Error, LoadState};
 //! use serde::{Serialize, Deserialize};
+//!
 //! #[derive(Default, Serialize, Deserialize)]
 //! struct MyData {
 //!     #[serde(flatten)]
 //!     data: std::collections::HashMap<String, String>
 //! }
 //!
-//!  
 //! impl Data for MyData {}
 //!
 //! impl Configurable for MyData {
@@ -60,7 +61,7 @@
 //! ```
 //!
 //! # Loading the data
-//! ```no_run
+//! ```norun
 //! fn load_my_stuff() -> Something {
 //!     use configurable::Configuable;
 //!     // this tries to load the configuration ot creates a default instance of it
