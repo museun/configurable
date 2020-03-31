@@ -26,7 +26,7 @@ impl Env {
         std::fs::read_to_string(path)
             .map(|data| {
                 data.lines()
-                    .filter(|s| s.starts_with('#'))
+                    .filter(|s| !s.starts_with('#'))
                     .filter_map(|line| {
                         let mut line = line.splitn(2, '=').map(str::trim);
                         Some((line.next()?.into(), line.next()?.into()))
