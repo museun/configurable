@@ -14,12 +14,12 @@ keywords = [ "configuraiton" ]
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-directories = "1.0.2"
+directories = "2.0"
 
 [dependencies.serde]
-version = "1.0.90"
+version = "1.0"
 features = ["derive"]
 
 [dependencies.toml]
-version = "0.5.0"
+version = "0.5"
 features = ["preserve_order"]
